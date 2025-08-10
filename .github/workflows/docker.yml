@@ -19,11 +19,23 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: setup-buildx
       uses: docker/setup-buildx-action@v3
-    - name: build-and-push
+    - name: build
       uses: docker/build-push-action@v5
       with:
         context:  .
-        push: ${{ github.event_name == 'push' }}
+        push: false
+        load: true
+        tags: test-img:local
+    - name: test
+      run:  |
+        docker run --rm test-img:local ./main 1
+        docker run --rm test-img:local ./main 2
+    - name: build-and-push
+      if: github.event_name == 'push'
+      uses: docker/build-push-action@v5
+      with:
+        context:  .
+        push: true
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/test-img:latest
           ${{ secrets.DOCKER_USERNAME }}/test-img:${{ github.sha }}
