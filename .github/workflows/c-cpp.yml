@@ -13,7 +13,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: main-binary
-        path: ./main
+        path: main
 
   test:
     runs-on: ubuntu-latest
@@ -23,8 +23,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: main-binary
-        path: ./main
     - name: test_1
-      run: ./main 1
+      run: chmod +x main && ./main 1
     - name: test_2
-      run: ./main 2
+      run: chmod +x main && ./main 2
