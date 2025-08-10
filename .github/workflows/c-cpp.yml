@@ -4,13 +4,26 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: build
       run: g++ -o main main.cpp
+    - name: upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: main-binary
+        path: ./main
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: download-artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: main-binary
+        path: ./main
     - name: test_1
       run: ./main 1
     - name: test_2
