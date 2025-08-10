@@ -7,8 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    uses: actions/checkout@v4
     steps:
+    - useS: actions/checkout@v4
     - name: build-bin
       run:  g++ -o main main.cpp
     - name: login
